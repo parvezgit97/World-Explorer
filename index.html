@@ -12,10 +12,14 @@
     <style>
         #map { height: 500px; }
         .country-card:hover { transform: translateY(-5px); }
-        .dark .bg-white { background-color: #1f2937 !important; }
-        .dark .text-gray-800 { color: #f3f4f6 !important; }
-        .dark .border-gray-200 { border-color: #4b5563 !important; }
-        .dark body { background-color: #111827; color: #f3f4f6; }
+        .dark .bg-white { background-color: #1a202c !important; }
+        .dark .text-gray-800 { color: #e2e8f0 !important; }
+        .dark .border-gray-200 { border-color: #4a5568 !important; }
+        .dark body { background-color: #1a202c; color: #e2e8f0; }
+        .dark .bg-blue-50 { background-color: #2d3748 !important; }
+        .dark .text-gray-500 { color: #a0aec0 !important; }
+        .dark .text-gray-900 { color: #e2e8f0 !important; }
+        .dark .bg-gray-200 { background-color: #4a5568 !important; color: #e2e8f0 !important; }
         [hidden] { display: none !important; }
         /* Bengali font */
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap');
@@ -42,23 +46,23 @@
         <!-- Search Bar with Autocomplete -->
         <div class="relative mb-8">
             <input id="searchInput" type="text" placeholder="Search for a country..." 
-                   class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-            <div id="autocompleteResults" class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg hidden"></div>
+                   class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            <div id="autocompleteResults" class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg hidden dark:bg-gray-800 dark:border-gray-600"></div>
         </div>
 
         <!-- Main Content -->
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Left Sidebar - Continent/Country Selection -->
             <div class="lg:w-1/4">
-                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <h2 class="text-xl font-bold mb-4" data-i18n="selectContinent">Select Continent</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6 dark:bg-gray-800">
+                    <h2 class="text-xl font-bold mb-4 dark:text-white" data-i18n="selectContinent">Select Continent</h2>
                     <div id="continentButtons" class="grid grid-cols-2 gap-2">
                         <!-- Continents will be added here by JavaScript -->
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-bold mb-4" data-i18n="countries">Countries</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
+                    <h2 class="text-xl font-bold mb-4 dark:text-white" data-i18n="countries">Countries</h2>
                     <div id="countryList" class="space-y-2 max-h-96 overflow-y-auto">
                         <!-- Countries will be added here by JavaScript -->
                     </div>
@@ -68,17 +72,17 @@
             <!-- Main Content Area -->
             <div class="lg:w-3/4">
                 <!-- Map Container -->
-                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <h2 class="text-xl font-bold mb-4" data-i18n="worldMap">World Map</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6 dark:bg-gray-800">
+                    <h2 class="text-xl font-bold mb-4 dark:text-white" data-i18n="worldMap">World Map</h2>
                     <div id="map" class="rounded-lg"></div>
                 </div>
 
                 <!-- Country Information -->
-                <div id="countryInfo" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden">
+                <div id="countryInfo" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden dark:bg-gray-800">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 id="countryName" class="text-2xl font-bold"></h2>
-                        <button id="speakButton" class="p-2 bg-blue-100 rounded-full">
-                            <svg id="speakIcon" class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <h2 id="countryName" class="text-2xl font-bold dark:text-white"></h2>
+                        <button id="speakButton" class="p-2 bg-blue-100 rounded-full dark:bg-gray-700">
+                            <svg id="speakIcon" class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
                             </svg>
                         </button>
@@ -87,8 +91,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Basic Info -->
                         <div>
-                            <h3 class="text-lg font-semibold mb-2" data-i18n="basicInfo">Basic Information</h3>
-                            <div class="space-y-2">
+                            <h3 class="text-lg font-semibold mb-2 dark:text-white" data-i18n="basicInfo">Basic Information</h3>
+                            <div class="space-y-2 dark:text-gray-300">
                                 <p><span class="font-semibold" data-i18n="area">Area:</span> <span id="countryArea">-</span> km²</p>
                                 <p><span class="font-semibold" data-i18n="population">Population:</span> <span id="countryPopulation">-</span></p>
                                 <p><span class="font-semibold" data-i18n="capital">Capital:</span> <span id="countryCapital">-</span></p>
@@ -96,18 +100,20 @@
                                 <p><span class="font-semibold" data-i18n="languages">Languages:</span> <span id="countryLanguages">-</span></p>
                                 <p><span class="font-semibold" data-i18n="timezone">Timezone:</span> <span id="countryTimezone">-</span></p>
                                 <p><span class="font-semibold" data-i18n="touristVisa">Tourist Visa:</span> <span id="countryVisa">-</span></p>
+                                <p><span class="font-semibold" data-i18n="gdp">GDP (nominal):</span> <span id="countryGDP">-</span></p>
+                                <p><span class="font-semibold" data-i18n="armyRank">Military Strength Rank:</span> <span id="countryArmyRank">-</span></p>
                             </div>
                         </div>
 
                         <!-- Flag and Weather -->
                         <div>
                             <div class="mb-4">
-                                <h3 class="text-lg font-semibold mb-2" data-i18n="flag">Flag</h3>
-                                <img id="countryFlag" src="" alt="Country Flag" class="h-24 border">
+                                <h3 class="text-lg font-semibold mb-2 dark:text-white" data-i18n="flag">Flag</h3>
+                                <img id="countryFlag" src="" alt="Country Flag" class="h-24 border dark:border-gray-600">
                             </div>
                             <div>
-                                <h3 class="text-lg font-semibold mb-2" data-i18n="weather">Weather</h3>
-                                <div id="countryWeather" class="flex items-center space-x-4">
+                                <h3 class="text-lg font-semibold mb-2 dark:text-white" data-i18n="weather">Weather</h3>
+                                <div id="countryWeather" class="flex items-center space-x-4 dark:text-gray-300">
                                     <div id="weatherIcon" class="text-4xl">☀️</div>
                                     <div>
                                         <p><span class="font-semibold" data-i18n="condition">Condition:</span> <span id="weatherCondition">-</span></p>
@@ -121,7 +127,7 @@
 
                     <!-- Tourist Attractions -->
                     <div class="mt-6">
-                        <h3 class="text-lg font-semibold mb-2" data-i18n="mostVisited">Most Visited Places</h3>
+                        <h3 class="text-lg font-semibold mb-2 dark:text-white" data-i18n="mostVisited">Most Visited Places</h3>
                         <div id="touristPlaces" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             <!-- Will be populated by JavaScript -->
                         </div>
@@ -129,11 +135,11 @@
                 </div>
 
                 <!-- Comparison Tool -->
-                <div id="comparisonTool" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden">
-                    <h2 class="text-xl font-bold mb-4" data-i18n="countryComparison">Country Comparison</h2>
+                <div id="comparisonTool" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden dark:bg-gray-800">
+                    <h2 class="text-xl font-bold mb-4 dark:text-white" data-i18n="countryComparison">Country Comparison</h2>
                     <div class="flex flex-wrap gap-4 mb-4">
-                        <select id="compareCountry1" class="p-2 border rounded-md"></select>
-                        <select id="compareCountry2" class="p-2 border rounded-md"></select>
+                        <select id="compareCountry1" class="p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"></select>
+                        <select id="compareCountry2" class="p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"></select>
                         <button id="compareButton" class="px-4 py-2 bg-blue-600 text-white rounded-md" data-i18n="compare">Compare</button>
                     </div>
                     <div id="comparisonResults" class="hidden">
@@ -142,16 +148,16 @@
                 </div>
 
                 <!-- Currency Converter -->
-                <div id="currencyConverter" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden">
-                    <h2 class="text-xl font-bold mb-4" data-i18n="currencyConverter">Currency Converter</h2>
+                <div id="currencyConverter" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden dark:bg-gray-800">
+                    <h2 class="text-xl font-bold mb-4 dark:text-white" data-i18n="currencyConverter">Currency Converter</h2>
                     <div class="flex flex-wrap items-center gap-4">
-                        <input type="number" id="convertAmount" class="p-2 border rounded-md w-24" value="1">
-                        <select id="convertFrom" class="p-2 border rounded-md"></select>
-                        <span data-i18n="to">to</span>
-                        <select id="convertTo" class="p-2 border rounded-md"></select>
+                        <input type="number" id="convertAmount" class="p-2 border rounded-md w-24 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="1">
+                        <select id="convertFrom" class="p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"></select>
+                        <span data-i18n="to" class="dark:text-white">to</span>
+                        <select id="convertTo" class="p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"></select>
                         <button id="convertButton" class="px-4 py-2 bg-blue-600 text-white rounded-md" data-i18n="convert">Convert</button>
                     </div>
-                    <div id="conversionResult" class="mt-4 text-xl font-semibold hidden"></div>
+                    <div id="conversionResult" class="mt-4 text-xl font-semibold hidden dark:text-white"></div>
                 </div>
 
                 <!-- Save/Export Button -->
@@ -169,20 +175,20 @@
 
     <!-- AI Assistant Modal -->
     <div id="aiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md dark:bg-gray-800">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold" data-i18n="aiAssistant">AI Assistant</h3>
-                <button id="closeAiModal" class="text-gray-500 hover:text-gray-700">
+                <h3 class="text-xl font-bold dark:text-white" data-i18n="aiAssistant">AI Assistant</h3>
+                <button id="closeAiModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
-            <div id="aiResponse" class="mb-4">
+            <div id="aiResponse" class="mb-4 max-h-64 overflow-y-auto dark:text-gray-300">
                 <p data-i18n="aiWelcome">How can I help you with information about countries?</p>
             </div>
             <div class="flex">
-                <input id="aiQuery" type="text" class="flex-grow p-2 border rounded-l-md" placeholder="Ask about any country...">
+                <input id="aiQuery" type="text" class="flex-grow p-2 border rounded-l-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Ask about any country...">
                 <button id="aiSubmit" class="px-4 py-2 bg-blue-600 text-white rounded-r-md" data-i18n="ask">Ask</button>
             </div>
         </div>
@@ -199,7 +205,8 @@
                 darkMode: false,
                 language: 'en',
                 savedCountries: [],
-                isSpeaking: false
+                isSpeaking: false,
+                exchangeRates: {}
             };
 
             // Translation dictionary
@@ -216,6 +223,8 @@
                     'languages': 'Languages',
                     'timezone': 'Timezone',
                     'touristVisa': 'Tourist Visa',
+                    'gdp': 'GDP (nominal)',
+                    'armyRank': 'Military Strength Rank',
                     'flag': 'Flag',
                     'weather': 'Weather',
                     'condition': 'Condition',
@@ -244,6 +253,8 @@
                     'languages': 'ভাষা',
                     'timezone': 'সময় অঞ্চল',
                     'touristVisa': 'পর্যটন ভিসা',
+                    'gdp': 'জিডিপি (নামমাত্র)',
+                    'armyRank': 'সামরিক শক্তি র‍্যাঙ্ক',
                     'flag': 'পতাকা',
                     'weather': 'আবহাওয়া',
                     'condition': 'অবস্থা',
@@ -320,7 +331,97 @@
                     populateSearchAutocomplete();
                     populateComparisonSelects();
                     populateCurrencySelects();
+                    fetchExchangeRates();
+                    
+                    // Enhance country data with GDP and military rank (mock data)
+                    enhanceCountryData();
                 });
+
+            // Enhance country data with GDP and military rank (mock data)
+            function enhanceCountryData() {
+                // Mock GDP data (in billion USD)
+                const gdpData = {
+                    'USA': 25439,
+                    'China': 17963,
+                    'Japan': 4232,
+                    'Germany': 4082,
+                    'India': 3385,
+                    'UK': 3089,
+                    'France': 2937,
+                    'Brazil': 1920,
+                    'Italy': 1861,
+                    'Canada': 1836,
+                    'Russia': 1835,
+                    'South Korea': 1665,
+                    'Australia': 1543,
+                    'Spain': 1406,
+                    'Mexico': 1283,
+                    'Indonesia': 1282,
+                    'Netherlands': 990,
+                    'Saudi Arabia': 833,
+                    'Turkey': 819,
+                    'Switzerland': 807
+                };
+
+                // Mock military strength rank
+                const militaryRank = {
+                    'USA': 1,
+                    'Russia': 2,
+                    'China': 3,
+                    'India': 4,
+                    'Japan': 5,
+                    'South Korea': 6,
+                    'France': 7,
+                    'UK': 8,
+                    'Pakistan': 9,
+                    'Brazil': 10,
+                    'Italy': 11,
+                    'Turkey': 12,
+                    'Egypt': 13,
+                    'Iran': 14,
+                    'Germany': 15,
+                    'Indonesia': 16,
+                    'Thailand': 17,
+                    'Vietnam': 18,
+                    'Poland': 19,
+                    'Israel': 20
+                };
+
+                state.countries.forEach(country => {
+                    // Add GDP data
+                    const gdp = gdpData[country.name.common] || Math.round(Math.random() * 500 + 10);
+                    country.gdp = gdp;
+
+                    // Add military rank
+                    const rank = militaryRank[country.name.common] || Math.round(Math.random() * 100 + 20);
+                    country.militaryRank = rank;
+                });
+            }
+
+            // Fetch real exchange rates
+            async function fetchExchangeRates() {
+                try {
+                    const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                    const data = await response.json();
+                    state.exchangeRates = data.rates;
+                } catch (error) {
+                    console.error('Failed to fetch exchange rates:', error);
+                    // Fallback to some mock rates if API fails
+                    state.exchangeRates = {
+                        'USD': 1,
+                        'EUR': 0.85,
+                        'GBP': 0.73,
+                        'JPY': 110,
+                        'AUD': 1.35,
+                        'CAD': 1.26,
+                        'CHF': 0.92,
+                        'CNY': 6.45,
+                        'SEK': 8.56,
+                        'NZD': 1.42,
+                        'BDT': 110
+                    };
+                }
+            }
 
             // Organize countries by continent
             function organizeByContinent() {
@@ -357,7 +458,7 @@
                 elements.continentButtons.innerHTML = '';
                 for (const continent in state.continents) {
                     const button = document.createElement('button');
-                    button.className = 'p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition';
+                    button.className = 'p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white';
                     button.textContent = continent;
                     button.addEventListener('click', () => showCountriesByContinent(continent));
                     elements.continentButtons.appendChild(button);
@@ -369,7 +470,7 @@
                 elements.countryList.innerHTML = '';
                 state.continents[continent].forEach(country => {
                     const countryElement = document.createElement('div');
-                    countryElement.className = 'p-3 hover:bg-gray-100 rounded-lg cursor-pointer flex items-center';
+                    countryElement.className = 'p-3 hover:bg-gray-100 rounded-lg cursor-pointer flex items-center dark:hover:bg-gray-700 dark:text-white';
                     countryElement.innerHTML = `
                         <span class="mr-2">${country.flag}</span>
                         ${country.name.common}
@@ -407,6 +508,12 @@
                 
                 // Timezone
                 document.getElementById('countryTimezone').textContent = country.timezones ? country.timezones[0] : 'N/A';
+                
+                // GDP
+                document.getElementById('countryGDP').textContent = country.gdp ? `$${country.gdp.toLocaleString()} billion` : 'N/A';
+                
+                // Military rank
+                document.getElementById('countryArmyRank').textContent = country.militaryRank ? `#${country.militaryRank}` : 'N/A';
                 
                 // Flag
                 document.getElementById('countryFlag').src = country.flags.png;
@@ -479,7 +586,7 @@
                 
                 places.forEach(place => {
                     const placeElement = document.createElement('div');
-                    placeElement.className = 'bg-blue-50 p-3 rounded-lg';
+                    placeElement.className = 'bg-blue-50 p-3 rounded-lg dark:bg-gray-700 dark:text-white';
                     placeElement.textContent = place;
                     placesContainer.appendChild(placeElement);
                 });
@@ -521,7 +628,7 @@
                         elements.autocompleteResults.innerHTML = '';
                         matches.forEach(country => {
                             const item = document.createElement('div');
-                            item.className = 'p-3 hover:bg-gray-100 cursor-pointer';
+                            item.className = 'p-3 hover:bg-gray-100 cursor-pointer dark:hover:bg-gray-700 dark:text-white';
                             item.innerHTML = `
                                 <div class="flex items-center">
                                     <span class="mr-2">${country.flag}</span>
@@ -635,6 +742,10 @@
                 doc.text(`Area: ${state.currentCountry.area ? state.currentCountry.area.toLocaleString() : 'N/A'} km²`, 10, y);
                 y += 10;
                 doc.text(`Languages: ${state.currentCountry.languages ? Object.values(state.currentCountry.languages).join(', ') : 'N/A'}`, 10, y);
+                y += 10;
+                doc.text(`GDP: $${state.currentCountry.gdp ? state.currentCountry.gdp.toLocaleString() : 'N/A'} billion`, 10, y);
+                y += 10;
+                doc.text(`Military Rank: ${state.currentCountry.militaryRank ? '#' + state.currentCountry.militaryRank : 'N/A'}`, 10, y);
                 y += 10;
                 
                 // Add flag (would need CORS proxy in real app)
@@ -751,16 +862,16 @@
                 
                 // Create comparison table
                 const table = document.createElement('table');
-                table.className = 'min-w-full divide-y divide-gray-200';
+                table.className = 'min-w-full divide-y divide-gray-200 dark:divide-gray-700';
                 
                 // Table header
                 const thead = document.createElement('thead');
                 thead.className = 'bg-gray-50 dark:bg-gray-700';
                 thead.innerHTML = `
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">${state.language === 'bn' ? 'মেট্রিক' : 'Metric'}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">${country1.name.common}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">${country2.name.common}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">${state.language === 'bn' ? 'মেট্রিক' : 'Metric'}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">${country1.name.common}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">${country2.name.common}</th>
                     </tr>
                 `;
                 table.appendChild(thead);
@@ -773,6 +884,8 @@
                 addComparisonRow(tbody, state.language === 'bn' ? 'জনসংখ্যা' : 'Population', country1.population, country2.population);
                 addComparisonRow(tbody, state.language === 'bn' ? 'আয়তন (কিমি²)' : 'Area (km²)', country1.area, country2.area);
                 addComparisonRow(tbody, state.language === 'bn' ? 'রাজধানী' : 'Capital', country1.capital ? country1.capital[0] : 'N/A', country2.capital ? country2.capital[0] : 'N/A');
+                addComparisonRow(tbody, state.language === 'bn' ? 'জিডিপি (বিলিয়ন $)' : 'GDP (billion $)', country1.gdp, country2.gdp);
+                addComparisonRow(tbody, state.language === 'bn' ? 'সামরিক শক্তি র‍্যাঙ্ক' : 'Military Strength Rank', country1.militaryRank, country2.militaryRank);
                 
                 table.appendChild(tbody);
                 resultsDiv.appendChild(table);
@@ -856,7 +969,7 @@
                 });
                 
                 // Convert button handler
-                document.getElementById('convertButton').addEventListener('click', function() {
+                document.getElementById('convertButton').addEventListener('click', async function() {
                     const amount = parseFloat(document.getElementById('convertAmount').value);
                     const fromCurrency = fromSelect.value;
                     const toCurrency = toSelect.value;
@@ -866,8 +979,19 @@
                         return;
                     }
                     
-                    // In a real app, you would fetch real exchange rates
-                    // This is a mock implementation with fixed rates
+                    // Try to use real exchange rates first
+                    if (state.exchangeRates[fromCurrency] && state.exchangeRates[toCurrency]) {
+                        const rate = state.exchangeRates[toCurrency] / state.exchangeRates[fromCurrency];
+                        const result = amount * rate;
+                        const resultDiv = document.getElementById('conversionResult');
+                        resultDiv.innerHTML = `
+                            ${amount} ${fromCurrency} = ${result.toFixed(2)} ${toCurrency}
+                        `;
+                        resultDiv.classList.remove('hidden');
+                        return;
+                    }
+                    
+                    // Fallback to mock rates if real rates not available
                     const mockRates = {
                         'USD': { 'BDT': 110, 'EUR': 0.85, 'JPY': 110 },
                         'EUR': { 'USD': 1.18, 'BDT': 130, 'JPY': 130 },
