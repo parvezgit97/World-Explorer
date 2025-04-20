@@ -7,15 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/speech-synthesis@latest/dist/speech-synthesis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         #map { height: 500px; }
         .country-card:hover { transform: translateY(-5px); }
-        .dark-mode { background-color: #1a202c; color: #e2e8f0; }
-        .dark-mode .bg-white { background-color: #2d3748 !important; }
-        .dark-mode .text-gray-800 { color: #e2e8f0 !important; }
-        .dark-mode .border-gray-200 { border-color: #4a5568 !important; }
+        .dark .bg-white { background-color: #1f2937 !important; }
+        .dark .text-gray-800 { color: #f3f4f6 !important; }
+        .dark .border-gray-200 { border-color: #4b5563 !important; }
+        .dark body { background-color: #111827; color: #f3f4f6; }
         [hidden] { display: none !important; }
+        /* Bengali font */
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap');
+        .bn { font-family: 'Hind Siliguri', sans-serif; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -47,14 +51,14 @@
             <!-- Left Sidebar - Continent/Country Selection -->
             <div class="lg:w-1/4">
                 <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <h2 class="text-xl font-bold mb-4">Select Continent</h2>
+                    <h2 class="text-xl font-bold mb-4" data-i18n="selectContinent">Select Continent</h2>
                     <div id="continentButtons" class="grid grid-cols-2 gap-2">
                         <!-- Continents will be added here by JavaScript -->
                     </div>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-bold mb-4">Countries</h2>
+                    <h2 class="text-xl font-bold mb-4" data-i18n="countries">Countries</h2>
                     <div id="countryList" class="space-y-2 max-h-96 overflow-y-auto">
                         <!-- Countries will be added here by JavaScript -->
                     </div>
@@ -65,7 +69,7 @@
             <div class="lg:w-3/4">
                 <!-- Map Container -->
                 <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                    <h2 class="text-xl font-bold mb-4">World Map</h2>
+                    <h2 class="text-xl font-bold mb-4" data-i18n="worldMap">World Map</h2>
                     <div id="map" class="rounded-lg"></div>
                 </div>
 
@@ -74,7 +78,7 @@
                     <div class="flex justify-between items-center mb-4">
                         <h2 id="countryName" class="text-2xl font-bold"></h2>
                         <button id="speakButton" class="p-2 bg-blue-100 rounded-full">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg id="speakIcon" class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
                             </svg>
                         </button>
@@ -83,32 +87,32 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Basic Info -->
                         <div>
-                            <h3 class="text-lg font-semibold mb-2">Basic Information</h3>
+                            <h3 class="text-lg font-semibold mb-2" data-i18n="basicInfo">Basic Information</h3>
                             <div class="space-y-2">
-                                <p><span class="font-semibold">Area:</span> <span id="countryArea">-</span> km²</p>
-                                <p><span class="font-semibold">Population:</span> <span id="countryPopulation">-</span></p>
-                                <p><span class="font-semibold">Capital:</span> <span id="countryCapital">-</span></p>
-                                <p><span class="font-semibold">Currency:</span> <span id="countryCurrency">-</span></p>
-                                <p><span class="font-semibold">Languages:</span> <span id="countryLanguages">-</span></p>
-                                <p><span class="font-semibold">Timezone:</span> <span id="countryTimezone">-</span></p>
-                                <p><span class="font-semibold">Tourist Visa:</span> <span id="countryVisa">-</span></p>
+                                <p><span class="font-semibold" data-i18n="area">Area:</span> <span id="countryArea">-</span> km²</p>
+                                <p><span class="font-semibold" data-i18n="population">Population:</span> <span id="countryPopulation">-</span></p>
+                                <p><span class="font-semibold" data-i18n="capital">Capital:</span> <span id="countryCapital">-</span></p>
+                                <p><span class="font-semibold" data-i18n="currency">Currency:</span> <span id="countryCurrency">-</span></p>
+                                <p><span class="font-semibold" data-i18n="languages">Languages:</span> <span id="countryLanguages">-</span></p>
+                                <p><span class="font-semibold" data-i18n="timezone">Timezone:</span> <span id="countryTimezone">-</span></p>
+                                <p><span class="font-semibold" data-i18n="touristVisa">Tourist Visa:</span> <span id="countryVisa">-</span></p>
                             </div>
                         </div>
 
                         <!-- Flag and Weather -->
                         <div>
                             <div class="mb-4">
-                                <h3 class="text-lg font-semibold mb-2">Flag</h3>
+                                <h3 class="text-lg font-semibold mb-2" data-i18n="flag">Flag</h3>
                                 <img id="countryFlag" src="" alt="Country Flag" class="h-24 border">
                             </div>
                             <div>
-                                <h3 class="text-lg font-semibold mb-2">Weather</h3>
+                                <h3 class="text-lg font-semibold mb-2" data-i18n="weather">Weather</h3>
                                 <div id="countryWeather" class="flex items-center space-x-4">
                                     <div id="weatherIcon" class="text-4xl">☀️</div>
                                     <div>
-                                        <p><span class="font-semibold">Condition:</span> <span id="weatherCondition">-</span></p>
-                                        <p><span class="font-semibold">Temperature:</span> <span id="weatherTemp">-</span>°C</p>
-                                        <p><span class="font-semibold">Humidity:</span> <span id="weatherHumidity">-</span>%</p>
+                                        <p><span class="font-semibold" data-i18n="condition">Condition:</span> <span id="weatherCondition">-</span></p>
+                                        <p><span class="font-semibold" data-i18n="temperature">Temperature:</span> <span id="weatherTemp">-</span>°C</p>
+                                        <p><span class="font-semibold" data-i18n="humidity">Humidity:</span> <span id="weatherHumidity">-</span>%</p>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +121,7 @@
 
                     <!-- Tourist Attractions -->
                     <div class="mt-6">
-                        <h3 class="text-lg font-semibold mb-2">Most Visited Places</h3>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="mostVisited">Most Visited Places</h3>
                         <div id="touristPlaces" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             <!-- Will be populated by JavaScript -->
                         </div>
@@ -126,11 +130,11 @@
 
                 <!-- Comparison Tool -->
                 <div id="comparisonTool" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden">
-                    <h2 class="text-xl font-bold mb-4">Country Comparison</h2>
+                    <h2 class="text-xl font-bold mb-4" data-i18n="countryComparison">Country Comparison</h2>
                     <div class="flex flex-wrap gap-4 mb-4">
                         <select id="compareCountry1" class="p-2 border rounded-md"></select>
                         <select id="compareCountry2" class="p-2 border rounded-md"></select>
-                        <button id="compareButton" class="px-4 py-2 bg-blue-600 text-white rounded-md">Compare</button>
+                        <button id="compareButton" class="px-4 py-2 bg-blue-600 text-white rounded-md" data-i18n="compare">Compare</button>
                     </div>
                     <div id="comparisonResults" class="hidden">
                         <!-- Comparison results will be shown here -->
@@ -139,13 +143,13 @@
 
                 <!-- Currency Converter -->
                 <div id="currencyConverter" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden">
-                    <h2 class="text-xl font-bold mb-4">Currency Converter</h2>
+                    <h2 class="text-xl font-bold mb-4" data-i18n="currencyConverter">Currency Converter</h2>
                     <div class="flex flex-wrap items-center gap-4">
                         <input type="number" id="convertAmount" class="p-2 border rounded-md w-24" value="1">
                         <select id="convertFrom" class="p-2 border rounded-md"></select>
-                        <span>to</span>
+                        <span data-i18n="to">to</span>
                         <select id="convertTo" class="p-2 border rounded-md"></select>
-                        <button id="convertButton" class="px-4 py-2 bg-blue-600 text-white rounded-md">Convert</button>
+                        <button id="convertButton" class="px-4 py-2 bg-blue-600 text-white rounded-md" data-i18n="convert">Convert</button>
                     </div>
                     <div id="conversionResult" class="mt-4 text-xl font-semibold hidden"></div>
                 </div>
@@ -156,9 +160,30 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
-                        Export as PDF
+                        <span data-i18n="exportPDF">Export as PDF</span>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant Modal -->
+    <div id="aiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold" data-i18n="aiAssistant">AI Assistant</h3>
+                <button id="closeAiModal" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="aiResponse" class="mb-4">
+                <p data-i18n="aiWelcome">How can I help you with information about countries?</p>
+            </div>
+            <div class="flex">
+                <input id="aiQuery" type="text" class="flex-grow p-2 border rounded-l-md" placeholder="Ask about any country...">
+                <button id="aiSubmit" class="px-4 py-2 bg-blue-600 text-white rounded-r-md" data-i18n="ask">Ask</button>
             </div>
         </div>
     </div>
@@ -173,7 +198,68 @@
                 continents: {},
                 darkMode: false,
                 language: 'en',
-                savedCountries: []
+                savedCountries: [],
+                isSpeaking: false
+            };
+
+            // Translation dictionary
+            const translations = {
+                'en': {
+                    'selectContinent': 'Select Continent',
+                    'countries': 'Countries',
+                    'worldMap': 'World Map',
+                    'basicInfo': 'Basic Information',
+                    'area': 'Area',
+                    'population': 'Population',
+                    'capital': 'Capital',
+                    'currency': 'Currency',
+                    'languages': 'Languages',
+                    'timezone': 'Timezone',
+                    'touristVisa': 'Tourist Visa',
+                    'flag': 'Flag',
+                    'weather': 'Weather',
+                    'condition': 'Condition',
+                    'temperature': 'Temperature',
+                    'humidity': 'Humidity',
+                    'mostVisited': 'Most Visited Places',
+                    'countryComparison': 'Country Comparison',
+                    'compare': 'Compare',
+                    'currencyConverter': 'Currency Converter',
+                    'to': 'to',
+                    'convert': 'Convert',
+                    'exportPDF': 'Export as PDF',
+                    'aiAssistant': 'AI Assistant',
+                    'aiWelcome': 'How can I help you with information about countries?',
+                    'ask': 'Ask'
+                },
+                'bn': {
+                    'selectContinent': 'মহাদেশ নির্বাচন করুন',
+                    'countries': 'দেশসমূহ',
+                    'worldMap': 'বিশ্ব মানচিত্র',
+                    'basicInfo': 'মৌলিক তথ্য',
+                    'area': 'আয়তন',
+                    'population': 'জনসংখ্যা',
+                    'capital': 'রাজধানী',
+                    'currency': 'মুদ্রা',
+                    'languages': 'ভাষা',
+                    'timezone': 'সময় অঞ্চল',
+                    'touristVisa': 'পর্যটন ভিসা',
+                    'flag': 'পতাকা',
+                    'weather': 'আবহাওয়া',
+                    'condition': 'অবস্থা',
+                    'temperature': 'তাপমাত্রা',
+                    'humidity': 'আর্দ্রতা',
+                    'mostVisited': 'সবচেয়ে জনপ্রিয় স্থান',
+                    'countryComparison': 'দেশের তুলনা',
+                    'compare': 'তুলনা করুন',
+                    'currencyConverter': 'মুদ্রা পরিবর্তক',
+                    'to': 'থেকে',
+                    'convert': 'পরিবর্তন করুন',
+                    'exportPDF': 'PDF হিসেবে ডাউনলোড করুন',
+                    'aiAssistant': 'এআই সহকারী',
+                    'aiWelcome': 'দেশ সম্পর্কে তথ্য জানতে আমি আপনাকে কিভাবে সাহায্য করতে পারি?',
+                    'ask': 'জিজ্ঞাসা করুন'
+                }
             };
 
             // DOM Elements
@@ -187,10 +273,16 @@
                 darkModeToggle: document.getElementById('darkModeToggle'),
                 languageToggle: document.getElementById('languageToggle'),
                 speakButton: document.getElementById('speakButton'),
+                speakIcon: document.getElementById('speakIcon'),
                 exportButton: document.getElementById('exportButton'),
                 aiButton: document.getElementById('aiButton'),
                 comparisonTool: document.getElementById('comparisonTool'),
-                currencyConverter: document.getElementById('currencyConverter')
+                currencyConverter: document.getElementById('currencyConverter'),
+                aiModal: document.getElementById('aiModal'),
+                closeAiModal: document.getElementById('closeAiModal'),
+                aiResponse: document.getElementById('aiResponse'),
+                aiQuery: document.getElementById('aiQuery'),
+                aiSubmit: document.getElementById('aiSubmit')
             };
 
             // Initialize the map
@@ -198,6 +290,25 @@
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
+
+            // Apply translations
+            function applyTranslations(lang) {
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (translations[lang] && translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+                
+                // Update placeholders
+                if (lang === 'bn') {
+                    document.getElementById('searchInput').placeholder = 'একটি দেশ খুঁজুন...';
+                    document.getElementById('aiQuery').placeholder = 'কোন দেশ সম্পর্কে জানতে চান...';
+                } else {
+                    document.getElementById('searchInput').placeholder = 'Search for a country...';
+                    document.getElementById('aiQuery').placeholder = 'Ask about any country...';
+                }
+            }
 
             // Fetch all countries data
             fetch('https://restcountries.com/v3.1/all')
@@ -441,25 +552,45 @@
             // Dark mode toggle
             elements.darkModeToggle.addEventListener('click', function() {
                 state.darkMode = !state.darkMode;
-                document.body.classList.toggle('dark-mode', state.darkMode);
-                this.textContent = state.darkMode ? 'Light' : 'Dark';
+                if (state.darkMode) {
+                    document.documentElement.classList.add('dark');
+                    this.textContent = 'Light';
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    this.textContent = 'Dark';
+                }
                 
                 // Save preference to localStorage
                 localStorage.setItem('darkMode', state.darkMode);
             });
 
-            // Language toggle (placeholder functionality)
+            // Language toggle
             elements.languageToggle.addEventListener('click', function() {
                 state.language = state.language === 'en' ? 'bn' : 'en';
-                this.textContent = state.language === 'en' ? 'বাংলা' : 'English';
                 
-                // In a real app, you would implement actual translation
-                alert('Language changed to ' + (state.language === 'en' ? 'English' : 'Bengali'));
+                if (state.language === 'bn') {
+                    document.documentElement.classList.add('bn');
+                    this.textContent = 'English';
+                } else {
+                    document.documentElement.classList.remove('bn');
+                    this.textContent = 'বাংলা';
+                }
+                
+                applyTranslations(state.language);
+                localStorage.setItem('language', state.language);
             });
 
             // Text-to-speech
             elements.speakButton.addEventListener('click', function() {
                 if (!state.currentCountry) return;
+                
+                if (state.isSpeaking) {
+                    // Stop speaking
+                    window.speechSynthesis.cancel();
+                    state.isSpeaking = false;
+                    elements.speakIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>`;
+                    return;
+                }
                 
                 const text = `Information about ${state.currentCountry.name.common}. 
                     Capital: ${state.currentCountry.capital ? state.currentCountry.capital[0] : 'unknown'}. 
@@ -468,26 +599,105 @@
                 
                 if ('speechSynthesis' in window) {
                     const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.onend = function() {
+                        state.isSpeaking = false;
+                        elements.speakIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>`;
+                    };
                     window.speechSynthesis.speak(utterance);
+                    state.isSpeaking = true;
+                    elements.speakIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>`;
                 } else {
-                    alert('Text-to-speech not supported in your browser');
+                    alert(state.language === 'bn' ? 'আপনার ব্রাউজারে টেক্সট-টু-স্পিচ সাপোর্ট করে না' : 'Text-to-speech not supported in your browser');
                 }
             });
 
-            // Export as PDF (placeholder)
+            // Export as PDF
             elements.exportButton.addEventListener('click', function() {
                 if (!state.currentCountry) {
-                    alert('Please select a country first');
+                    alert(state.language === 'bn' ? 'প্রথমে একটি দেশ নির্বাচন করুন' : 'Please select a country first');
                     return;
                 }
                 
-                // In a real app, you would use a library like jsPDF
-                alert('Exporting information about ' + state.currentCountry.name.common + ' as PDF');
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Add country name as title
+                doc.setFontSize(20);
+                doc.text(`Country Information: ${state.currentCountry.name.common}`, 10, 20);
+                
+                // Add basic information
+                doc.setFontSize(12);
+                let y = 40;
+                doc.text(`Capital: ${state.currentCountry.capital ? state.currentCountry.capital[0] : 'N/A'}`, 10, y);
+                y += 10;
+                doc.text(`Population: ${state.currentCountry.population.toLocaleString()}`, 10, y);
+                y += 10;
+                doc.text(`Area: ${state.currentCountry.area ? state.currentCountry.area.toLocaleString() : 'N/A'} km²`, 10, y);
+                y += 10;
+                doc.text(`Languages: ${state.currentCountry.languages ? Object.values(state.currentCountry.languages).join(', ') : 'N/A'}`, 10, y);
+                y += 10;
+                
+                // Add flag (would need CORS proxy in real app)
+                // doc.addImage(state.currentCountry.flags.png, 'PNG', 10, y, 50, 30);
+                y += 40;
+                
+                // Add most visited places
+                doc.text('Most Visited Places:', 10, y);
+                y += 10;
+                const placesContainer = document.getElementById('touristPlaces');
+                const places = Array.from(placesContainer.children).map(el => el.textContent);
+                places.forEach((place, i) => {
+                    doc.text(`${i+1}. ${place}`, 15, y);
+                    y += 7;
+                });
+                
+                // Save the PDF
+                doc.save(`${state.currentCountry.name.common}_information.pdf`);
             });
 
-            // AI button (placeholder)
+            // AI Assistant
             elements.aiButton.addEventListener('click', function() {
-                alert('AI assistant feature would go here');
+                elements.aiModal.classList.remove('hidden');
+            });
+
+            elements.closeAiModal.addEventListener('click', function() {
+                elements.aiModal.classList.add('hidden');
+            });
+
+            elements.aiSubmit.addEventListener('click', function() {
+                const query = elements.aiQuery.value.trim();
+                if (!query) return;
+                
+                // Mock AI response - in a real app you'd call an AI API
+                let response = '';
+                if (query.toLowerCase().includes('population')) {
+                    if (state.currentCountry) {
+                        response = `The population of ${state.currentCountry.name.common} is ${state.currentCountry.population.toLocaleString()}.`;
+                    } else {
+                        response = 'Please select a country first to get population information.';
+                    }
+                } else if (query.toLowerCase().includes('capital')) {
+                    if (state.currentCountry) {
+                        response = `The capital of ${state.currentCountry.name.common} is ${state.currentCountry.capital ? state.currentCountry.capital[0] : 'not specified'}.`;
+                    } else {
+                        response = 'Please select a country first to get capital information.';
+                    }
+                } else {
+                    response = `I'm a mock AI assistant. In a real application, I would provide intelligent answers about ${query}.`;
+                }
+                
+                if (state.language === 'bn') {
+                    response = `আমি একটি মক এআই সহকারী। একটি বাস্তব অ্যাপ্লিকেশনে, আমি ${query} সম্পর্কে বুদ্ধিমত্তাপূর্ণ উত্তর প্রদান করতাম।`;
+                }
+                
+                const responseElement = document.createElement('p');
+                responseElement.className = 'mb-2';
+                responseElement.textContent = response;
+                elements.aiResponse.appendChild(responseElement);
+                elements.aiQuery.value = '';
+                
+                // Scroll to bottom
+                elements.aiResponse.scrollTop = elements.aiResponse.scrollHeight;
             });
 
             // Populate comparison selects
@@ -501,7 +711,7 @@
                 // Add empty option
                 const emptyOption = document.createElement('option');
                 emptyOption.value = '';
-                emptyOption.textContent = 'Select country';
+                emptyOption.textContent = state.language === 'bn' ? 'দেশ নির্বাচন করুন' : 'Select country';
                 select1.appendChild(emptyOption.cloneNode(true));
                 select2.appendChild(emptyOption.cloneNode(true));
                 
@@ -520,7 +730,7 @@
                     const country2Code = select2.value;
                     
                     if (!country1Code || !country2Code) {
-                        alert('Please select two countries to compare');
+                        alert(state.language === 'bn' ? 'দুটি দেশ নির্বাচন করুন' : 'Please select two countries to compare');
                         return;
                     }
                     
@@ -545,10 +755,10 @@
                 
                 // Table header
                 const thead = document.createElement('thead');
-                thead.className = 'bg-gray-50';
+                thead.className = 'bg-gray-50 dark:bg-gray-700';
                 thead.innerHTML = `
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Metric</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">${state.language === 'bn' ? 'মেট্রিক' : 'Metric'}</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">${country1.name.common}</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">${country2.name.common}</th>
                     </tr>
@@ -557,12 +767,12 @@
                 
                 // Table body
                 const tbody = document.createElement('tbody');
-                tbody.className = 'bg-white divide-y divide-gray-200';
+                tbody.className = 'bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-800';
                 
                 // Add comparison rows
-                addComparisonRow(tbody, 'Population', country1.population, country2.population);
-                addComparisonRow(tbody, 'Area (km²)', country1.area, country2.area);
-                addComparisonRow(tbody, 'Capital', country1.capital ? country1.capital[0] : 'N/A', country2.capital ? country2.capital[0] : 'N/A');
+                addComparisonRow(tbody, state.language === 'bn' ? 'জনসংখ্যা' : 'Population', country1.population, country2.population);
+                addComparisonRow(tbody, state.language === 'bn' ? 'আয়তন (কিমি²)' : 'Area (km²)', country1.area, country2.area);
+                addComparisonRow(tbody, state.language === 'bn' ? 'রাজধানী' : 'Capital', country1.capital ? country1.capital[0] : 'N/A', country2.capital ? country2.capital[0] : 'N/A');
                 
                 table.appendChild(tbody);
                 resultsDiv.appendChild(table);
@@ -571,6 +781,7 @@
             // Add a row to comparison table
             function addComparisonRow(tbody, metric, value1, value2) {
                 const row = document.createElement('tr');
+                row.className = 'dark:bg-gray-800';
                 
                 // Format values
                 let display1 = value1;
@@ -594,9 +805,9 @@
                 }
                 
                 row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${metric}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${display1}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${display2}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${metric}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${display1}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${display2}</td>
                 `;
                 tbody.appendChild(row);
             }
@@ -623,7 +834,7 @@
                 // Add empty option
                 const emptyOption = document.createElement('option');
                 emptyOption.value = '';
-                emptyOption.textContent = 'Select currency';
+                emptyOption.textContent = state.language === 'bn' ? 'মুদ্রা নির্বাচন করুন' : 'Select currency';
                 fromSelect.appendChild(emptyOption.cloneNode(true));
                 toSelect.appendChild(emptyOption.cloneNode(true));
                 
@@ -651,7 +862,7 @@
                     const toCurrency = toSelect.value;
                     
                     if (!amount || !fromCurrency || !toCurrency) {
-                        alert('Please fill all fields');
+                        alert(state.language === 'bn' ? 'সমস্ত ফিল্ড পূরণ করুন' : 'Please fill all fields');
                         return;
                     }
                     
@@ -682,11 +893,18 @@
                 });
             }
 
-            // Check for saved dark mode preference
+            // Initialize from localStorage
             if (localStorage.getItem('darkMode') === 'true') {
                 state.darkMode = true;
-                document.body.classList.add('dark-mode');
+                document.documentElement.classList.add('dark');
                 elements.darkModeToggle.textContent = 'Light';
+            }
+            
+            if (localStorage.getItem('language') === 'bn') {
+                state.language = 'bn';
+                document.documentElement.classList.add('bn');
+                elements.languageToggle.textContent = 'English';
+                applyTranslations('bn');
             }
         });
     </script>
